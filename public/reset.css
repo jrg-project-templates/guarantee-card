@@ -1,0 +1,37 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+img {
+  width: 100%;
+  vertical-align: bottom;
+}
+html {
+  --highlight: #FF4F49;
+  --default-color: white;
+}
+body {
+  background: #153955;
+}
+@font-face {
+  font-family: 'Xique';
+  src: url('./font/xiquezhaopai.eot');
+  src: url('./font/xiquezhaopai.eot?#font-spider') format('embedded-opentype'),
+  url('./font/xiquezhaopai.woff') format('woff'),
+  url('./font/xiquezhaopai.ttf') format('truetype'),
+  url('./font/xiquezhaopai.svg') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Couriertxt';
+  src: url('./font/COURIERTXT.eot');
+  src: url('./font/COURIERTXT.eot?#font-spider') format('embedded-opentype'),
+  url('./font/COURIERTXT.woff') format('woff'),
+  url('./font/COURIERTXT.ttf') format('truetype'),
+  url('./font/COURIERTXT.svg') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
