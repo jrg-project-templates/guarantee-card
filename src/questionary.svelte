@@ -6,7 +6,8 @@
   import buttonActiveImage from './images/button-active.svg'
   import typeMachine from './images/questionary-type.svg'
   import CustomInput from './components/CustomInput.svelte'
-
+  import {createEventDispatcher} from 'svelte'
+  const dispatch = createEventDispatcher()
   import {fly} from 'svelte/transition'
 
   const defaultFinalTargetList = [
@@ -50,6 +51,7 @@
   }
   let dateVisible = false
   let fingerVisible = false
+  let fingerAnimationEnd = false
   let dateContent = ''
   $: typeMachineActive = (() => {
     let count = 0
@@ -66,9 +68,11 @@
     let count = 0
     const date = getFormatDate()
     const typeWord = () => setTimeout(() => {
-      if (count > date.length) {fingerVisible = true ; return}
-      else {
-        count ++
+      if (count > date.length) {
+        fingerVisible = true
+        return
+      } else {
+        count++
         dateContent = date.slice(0, count + 1)
         typeWord()
       }
@@ -79,8 +83,7 @@
   }
 
   export let reportImage = ''
-
-
+  export let canScrollDown = false
   let randomCounter = 0
   const getRandomFinalTarget = () => {
     setTimeout(() => {
@@ -105,10 +108,24 @@
       dateVisible = true
       clickLimited = true
       setTimeout(() => clickLimited = false, 3000)
+      if (reportImage && fingerVisible) {
+        reportImage = ''
+        dispatch("nextPage")
+      }
       let url = new URL(location.hostname === 'localhost' ? 'http://localhost:5002/guarantee_card' : `https://${location.hostname}/guarantee_card`)
       Object.keys(targetInfo).forEach(key => url.searchParams.append(key, targetInfo[key]))
       fetch(url, {credentials: 'include'}).then(r => r.json()).then((data) => reportImage = data.imgUrl)
     }
+  }
+
+  $: if (fingerAnimationEnd) {
+    setTimeout(() => dispatch("nextPage"), 300)
+  }
+
+  $: if (fingerVisible && typeMachine) {
+    canScrollDown = true
+  } else {
+    canScrollDown = false
   }
 </script>
 
@@ -221,7 +238,10 @@
         <span class="date">{dateContent}</span>
       {/if}
       {#if fingerVisible && typeMachineActive}
-        <img src="{finger}" class="finger" in:fly="{{ y: 10, duration: 500 }}" alt="手印"/>
+        <img src="{finger}" class="finger" in:fly="{{ y: 10, duration: 500 }}" alt="手印"
+             on:introstart="{() => fingerAnimationEnd = false}"
+             on:introend="{() => fingerAnimationEnd = true}"
+        />
       {/if}
     <button class="submit-button" on:click={submitTargets}>
       <img src="{buttonImage}" class="default" alt="按钮"/>

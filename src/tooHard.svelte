@@ -1,4 +1,6 @@
 <script>
+  import {createEventDispatcher} from 'svelte'
+  const dispatch = createEventDispatcher()
   let wordList = [
     `<span>我</span>`,
     `<span>太</span>`,
@@ -13,10 +15,17 @@
       if (currentWordIndex < wordList.length - 1) {
         currentWordIndex++
         changeWord()
+      } else {
+        animationStart && setTimeout(() => dispatch('animationEnd'), 400)
       }
     }, 400)
   }
-  setTimeout(changeWord, 600)
+
+  export let animationStart
+  $: if (animationStart) {
+    currentWordIndex = 0
+    setTimeout(changeWord, 600)
+  }
 </script>
 
 <style type="text/scss" lang="scss">

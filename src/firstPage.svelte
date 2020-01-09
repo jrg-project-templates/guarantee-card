@@ -1,29 +1,7 @@
 <script>
-  import {onMount} from 'svelte'
-
-  onMount(() => {
-
-  })
-  let keywords = [
-    '996',
-    '好嗨哟，感觉人生已经到达了高潮',
-    '盘他！',
-    '鸡你太美',
-    '猪肉涨价',
-    '我不要你觉得，我要我觉得',
-    '你是什么垃圾',
-    '道路千万条，安全第一条',
-    '我命由我不由天',
-    '5G元年',
-    '有钱人的生活，就是这么朴实无华且枯燥',
-    'OMG！买它买它买它！',
-    '不忘初心',
-    '柠檬精',
-    '断舍离',
-    '不忘初心，继续前行',
-    '咱也不知道，咱也不敢问',
-    '奥利给！'
-  ]
+  import {fly} from 'svelte/transition'
+  export let keyword = ''
+  export let showSummary = false, showSummaryEnd = false
 </script>
 
 <style type="text/scss" lang="scss">
@@ -61,6 +39,12 @@
     }
     #scroller-wrapper {
       flex: 1;
+      .keyword {
+        padding: 3vh 5vw;
+        color: var(--highlight);
+        font-size: 34px;
+        text-align: center;
+      }
     }
     .row.summary {
       font-size: 34px;
@@ -90,9 +74,9 @@
     <span>经历了</span>
   </div>
   <div id="scroller-wrapper" class="animated-text">
-      {#each keywords as keyword, i}
-        <span class="keyword">{keyword}</span>
-      {/each}
+    <div class="keyword">{keyword}</div>
   </div>
-  <div class="row summary animated-text">一句话总结</div>
+    {#if showSummary}
+      <div class="row summary" in:fly="{{ y: 10, duration: 500 }}" on:introend="{() => showSummaryEnd = true}">一句话总结</div>
+    {/if}
 </div>

@@ -5,6 +5,7 @@ import svg from 'rollup-plugin-svg'
 import {scss} from 'svelte-preprocess'
 import { terser } from "rollup-plugin-terser";
 import typescript from "rollup-plugin-typescript2";
+import commonjs from 'rollup-plugin-commonjs';
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -46,6 +47,13 @@ export default {
     }),
     resolve(),
     typescript(),
+    commonjs({
+      namedExports: {
+        'node_modules/lodash/lodash.js': [
+          'throttle'
+        ]
+      }
+    }),
     production && terser()
   ]
 }
