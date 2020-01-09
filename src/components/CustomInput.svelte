@@ -1,7 +1,19 @@
 <script>
-
+  import {createEventDispatcher} from 'svelte'
+  const dispatch = createEventDispatcher()
+  export let suffix
   export let type = 'default'
-  export let CustomSuffix = '11/50'
+  export let value = ''
+  const onChange = (event) => {
+    if (type === 'mini' && event.target.value.length > 2) {
+      value = event.target.value.slice(0, 2)
+      return
+    } else if (event.target.value.length > 20) {
+      value = event.target.value.slice(0, 20)
+    } else {
+      value = event.target.value
+    }
+  }
 </script>
 
 <style type="text/scss" lang="scss">
@@ -36,22 +48,20 @@
   span.suffix {
     letter-spacing: .15em;
     color: #C52E19;
-    font-size: 10px;
-    height: 10px;
-    line-height: 10px;
+    font-size: 11px;
+    height: 11px;
+    line-height: 11px;
     padding: 0 4px;
   }
 </style>
 
 {#if type === 'mini'}
   <div class="input-wrapper mini">
-    <input class="customInput" value="12"/>
+    <input class="customInput" bind:value={value} on:input={onChange} type="number"/>
   </div>
 {:else}
   <div class="input-wrapper">
-    <input class="customInput" value="12"/>
-      {#if CustomSuffix}
-        <span class="suffix">{CustomSuffix}</span>
-      {/if}
+    <input class="customInput" bind:value={value} on:input={onChange}/>
+    <span class="suffix" on:click={() => dispatch('suffixClick')}>{suffix || `${value.length}/20`}</span>
   </div>
 {/if}
