@@ -14,6 +14,13 @@
       value = event.target.value
     }
   }
+
+  const fixScroll = () => {
+    const target = document.getElementById('guarantee-wrapper') || document.body
+    target.scrollBy({
+      top: document.querySelector(".questionary-wrapper").getBoundingClientRect().top
+    })
+  }
 </script>
 
 <style type="text/scss" lang="scss">
@@ -57,11 +64,11 @@
 
 {#if type === 'mini'}
   <div class="input-wrapper mini">
-    <input class="customInput" bind:value={value} on:input={onChange} type="number"/>
+    <input class="customInput" bind:value={value} on:input={onChange} type="number" on:blur={fixScroll}/>
   </div>
 {:else}
   <div class="input-wrapper">
-    <input class="customInput" bind:value={value} on:input={onChange}/>
+    <input class="customInput" bind:value={value} on:input={onChange} on:blur={fixScroll}/>
     <span class="suffix" on:click={() => dispatch('suffixClick')}>{suffix || `${value.length}/20`}</span>
   </div>
 {/if}

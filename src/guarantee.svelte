@@ -12,6 +12,9 @@
   let scrollBehavior = 'pending'
   $: touchMinLength = currentPageIndex === 0 ? 0 : 50
   onMount(() => {
+    document.body.addEventListener('touchmove', function (e) {
+      e.preventDefault();
+    }, {passive: false});
     document.ontouchstart = (e) => {
       touchStartAt = e.targetTouches[0].clientY
     }
@@ -55,21 +58,22 @@
   }
 
   const pageSelector = ['.first-page', '.too-hard', '.let-us-start', '.questionary-wrapper', '.report']
-  const nextPage = () => {
+  const target = document.getElementById('guarantee-wrapper') || document.body
+  const nextPage = _.throttle(() => {
     currentPageIndex += 1
-    window.scrollBy({
+    target.scrollBy({
       top: document.querySelector(pageSelector[currentPageIndex]).getBoundingClientRect().top,
       behavior: 'smooth'
     })
-  }
+  }, 2000)
 
-  const prePage = () => {
+  const prePage = _.throttle(() => {
     currentPageIndex -= 1
-    window.scrollBy({
+    target.scrollBy({
       top: document.querySelector(pageSelector[currentPageIndex]).getBoundingClientRect().top,
       behavior: 'smooth'
     })
-  }
+  }, 2000)
 
   let firstPageConfig = {
     keywordChange: _.throttle(_keywordChange, 100),
@@ -121,5 +125,5 @@
   <Questionary bind:reportImage={questionaryConfig.reportImage}
                bind:canScrollDown={questionaryConfig.canScrollDown}
                on:nextPage={nextPage}/>
-  <Report reportSrc={questionaryConfig.reportImage}/>
+  <Report reportSrc={questionaryConfig.reportImage} visible={questionaryConfig.canScrollDown}/>
 </div>

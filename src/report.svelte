@@ -1,8 +1,13 @@
 <script>
   import loading from './images/loading.svg'
-  import repeat from './images/repeact-report.svg'
+  import repeat from './images/repeat-report.svg'
+  import {onMount} from 'svelte'
+  onMount(() => {
+    const target = document.getElementById('guarantee-wrapper') || document.body
+    target.scrollTo({top: 0})
+  })
 
-  export let reportSrc
+  export let reportSrc, visible = false
 </script>
 
 <style type="text/scss" lang="scss">
@@ -13,6 +18,10 @@
     justify-content: center;
     &.load-report {
       display: block;
+    }
+    &.hidden {
+      visibility: hidden;
+      height: 0;
     }
     img {
       display: block;
@@ -29,10 +38,10 @@
   }
 </style>
 
-<div class="report {reportSrc && 'load-report' || ''}">
+<div class="report {reportSrc && 'load-report' || ''} {!visible && 'hidden' || ''}">
     {#if reportSrc}
       <img src="{reportSrc}" alt="我的Flag报告"/>
-      <div style="background: url('{repeat}'); height: 50vh"/>
+      <div style="background: url('{repeat}'); height: 50vh; position: relative; top: -5px;"/>
     {:else}
       <div class="loading-tip">
         <img src="{loading}" alt="加载中" class="loading"/>

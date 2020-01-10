@@ -5,6 +5,7 @@
   import buttonImage from './images/button.svg'
   import buttonActiveImage from './images/button-active.svg'
   import typeMachine from './images/questionary-type.svg'
+  import typeMachineRepeat from './images/type-machine-repeat.svg'
   import CustomInput from './components/CustomInput.svelte'
   import {createEventDispatcher} from 'svelte'
   const dispatch = createEventDispatcher()
@@ -112,9 +113,9 @@
         reportImage = ''
         dispatch("nextPage")
       }
-      let url = new URL(location.hostname === 'localhost' ? 'http://localhost:5002/guarantee_card' : `https://${location.hostname}/guarantee_card`)
+      let url = new URL(location.hostname === 'localhost' ? 'http://localhost:5002/guarantee_card' : `https://${location.host}/guarantee_card`)
       Object.keys(targetInfo).forEach(key => url.searchParams.append(key, targetInfo[key]))
-      fetch(url, {credentials: 'include'}).then(r => r.json()).then((data) => reportImage = data.imgUrl)
+      fetch(url, {credentials: 'include'}).then(r => r.json(), () => {console.log('fetch 失败')}).then((data) => reportImage = data.imgUrl)
     }
   }
 
@@ -126,6 +127,27 @@
     canScrollDown = true
   } else {
     canScrollDown = false
+  }
+
+  const fixScroll = () => {
+    const target = document.getElementById('guarantee-wrapper') || document.body
+    target.scrollBy({
+      top: document.querySelector(".questionary-wrapper").getBoundingClientRect().top
+    })
+  }
+
+  let typeMachineVisible = true
+  let preHeight = window.innerHeight
+  window.onresize = function() {
+    let newHeight = window.innerHeight
+    if (newHeight - preHeight > 140) {
+      fixScroll()
+      typeMachineVisible = true
+    }
+    else if (newHeight - preHeight < -140) {
+      typeMachineVisible = false
+    }
+    preHeight = newHeight
   }
 </script>
 
@@ -165,9 +187,12 @@
       left: 0;
       right: 0;
       z-index: 2;
-      transition: transform 1s ease-in-out;
+      transition: transform .5s ease-in-out;
       &.active {
-        transform: translateY(calc(-100% + 15vh));
+        transform: translateY(-15vh);
+      }
+      &.hide {
+        visibility: hidden;
       }
       :global(span.date) {
         position: absolute;
@@ -185,22 +210,25 @@
         top: -10%;
         right: 15%;
       }
-      button.submit-button {
+      .submit-button {
         outline: none;
         border: none;
-        display: inline-block;
         background: transparent;
         position: absolute;
-        bottom: 2vh;
+        top: 40vw;
         left: 0;
         right: 0;
         margin: 0 auto;
+        text-align: center;
+        > img {
+          width: 42vw;
+        }
         > img.active {
           display: none;
         }
         &:active {
           > img.default {display: none;}
-          > img.active {display: inline-block;}
+          > img.active {display: inline-block; transform: translateY(4px);}
         }
       }
     }
@@ -232,8 +260,9 @@
       <CustomInput suffix="随机" on:suffixClick={getRandomFinalTarget} bind:value={targetInfo.finalTarget}/>
     </div>
   </div>
-  <div class="action-wrapper {typeMachineActive && 'active' || ''}">
+  <div class="action-wrapper {typeMachineActive && 'active' || ''} {!typeMachineVisible && 'hide' || ''}">
     <img src="{typeMachine}" class="type-machine" alt="打字机"/>
+    <div style="background: url('{typeMachineRepeat}');height: 20vh"/>
       {#if dateVisible && typeMachineActive}
         <span class="date">{dateContent}</span>
       {/if}
