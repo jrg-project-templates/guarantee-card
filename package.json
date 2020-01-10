@@ -11,6 +11,7 @@
     "@rollup/plugin-image": "^2.0.1",
     "node-sass": "^4.13.0",
     "rollup": "^1.11.0",
+    "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-node-resolve": "^4.0.0",
     "rollup-plugin-svelte": "^5.0.0",
     "rollup-plugin-svg": "^2.0.0",
@@ -18,8 +19,7 @@
     "rollup-plugin-typescript2": "^0.25.2",
     "svelte": "^3.0.0",
     "svelte-preprocess": "^3.2.0",
-    "typescript": "^3.7.2",
-    "rollup-plugin-commonjs": "^10.1.0"
+    "typescript": "^3.7.2"
   },
   "keywords": [
     "svelte"
@@ -28,6 +28,7 @@
     "src"
   ],
   "dependencies": {
-    "lodash": "^4.17.15"
+    "lodash": "^4.17.15",
+    "smoothscroll-polyfill": "^0.4.4"
   }
 }

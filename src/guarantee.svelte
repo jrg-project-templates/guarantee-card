@@ -6,7 +6,9 @@
   import Questionary from './questionary.svelte'
   import _ from 'lodash'
   import {onMount} from 'svelte'
-
+  import smoothscroll from 'smoothscroll-polyfill';
+  smoothscroll.polyfill();
+  
   let touchStartAt = 0
   let currentPageIndex = 0
   let scrollBehavior = 'pending'
@@ -76,7 +78,7 @@
   }, 2000)
 
   let firstPageConfig = {
-    keywordChange: _.throttle(_keywordChange, 100),
+    keywordChange: _.throttle(_keywordChange, 80),
     showSummary: false,
     showSummaryEnd: false,
     keywordIndex: 0,

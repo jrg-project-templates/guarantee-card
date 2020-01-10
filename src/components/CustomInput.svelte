@@ -1,5 +1,7 @@
 <script>
   import {createEventDispatcher} from 'svelte'
+  import fixScroll from './fixScroll.js'
+
   const dispatch = createEventDispatcher()
   export let suffix
   export let type = 'default'
@@ -8,19 +10,13 @@
     if (type === 'mini' && event.target.value.length > 2) {
       value = event.target.value.slice(0, 2)
       return
-    } else if (event.target.value.length > 20) {
-      value = event.target.value.slice(0, 20)
+    } else if (event.target.value.length > 30) {
+      value = event.target.value.slice(0, 30)
     } else {
       value = event.target.value
     }
   }
 
-  const fixScroll = () => {
-    const target = document.getElementById('guarantee-wrapper') || document.body
-    target.scrollBy({
-      top: document.querySelector(".questionary-wrapper").getBoundingClientRect().top
-    })
-  }
 </script>
 
 <style type="text/scss" lang="scss">
@@ -69,6 +65,6 @@
 {:else}
   <div class="input-wrapper">
     <input class="customInput" bind:value={value} on:input={onChange} on:blur={fixScroll}/>
-    <span class="suffix" on:click={() => dispatch('suffixClick')}>{suffix || `${value.length}/20`}</span>
+    <span class="suffix" on:click={() => dispatch('suffixClick')}>{suffix || `${value.length}/30`}</span>
   </div>
 {/if}

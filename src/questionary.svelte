@@ -8,6 +8,7 @@
   import typeMachineRepeat from './images/type-machine-repeat.svg'
   import CustomInput from './components/CustomInput.svelte'
   import {createEventDispatcher} from 'svelte'
+  import fixScroll from './components/fixScroll.js'
   const dispatch = createEventDispatcher()
   import {fly} from 'svelte/transition'
 
@@ -113,7 +114,7 @@
         reportImage = ''
         dispatch("nextPage")
       }
-      let url = new URL(location.hostname === 'localhost' ? 'http://localhost:5002/guarantee_card' : `https://${location.host}/guarantee_card`)
+      let url = new URL(location.hostname === 'localhost' ? 'http://localhost:5002/guarantee_card' : `http://${location.host}/guarantee_card`)
       Object.keys(targetInfo).forEach(key => url.searchParams.append(key, targetInfo[key]))
       fetch(url, {credentials: 'include'}).then(r => r.json(), () => {console.log('fetch 失败')}).then((data) => reportImage = data.imgUrl)
     }
@@ -129,12 +130,10 @@
     canScrollDown = false
   }
 
-  const fixScroll = () => {
-    const target = document.getElementById('guarantee-wrapper') || document.body
-    target.scrollBy({
-      top: document.querySelector(".questionary-wrapper").getBoundingClientRect().top
-    })
-  }
+  document.body.addEventListener('focusout', () => {
+    //软键盘收起的事件处理
+    fixScroll()
+  })
 
   let typeMachineVisible = true
   let preHeight = window.innerHeight
@@ -196,10 +195,11 @@
       }
       :global(span.date) {
         position: absolute;
-        top: 3%;
+        top: 2.5%;
         right: 70vw;
         color: #000000;
         font-size: 10px;
+        line-height: 12px;
         letter-spacing: .15em;
         font-family: Couriertxt;
       }
@@ -272,9 +272,9 @@
              on:introend="{() => fingerAnimationEnd = true}"
         />
       {/if}
-    <button class="submit-button" on:click={submitTargets}>
+    <div class="submit-button" on:click={submitTargets}>
       <img src="{buttonImage}" class="default" alt="按钮"/>
       <img src="{buttonActiveImage}" class="active" alt="按钮按下"/>
-    </button>
+    </div>
   </div>
 </div>

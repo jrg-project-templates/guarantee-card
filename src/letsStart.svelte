@@ -47,11 +47,6 @@
       width: 16px;
       animation: shake 1s ease-in-out infinite;
     }
-    @keyframes shake {
-      0% { transform: translateY(0); }
-      50% { transform: translateY(4px); }
-      100% { transform: translateY(0); }
-    }
   }
 </style>
 

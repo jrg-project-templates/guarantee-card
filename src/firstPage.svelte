@@ -1,7 +1,9 @@
 <script>
   import {fly} from 'svelte/transition'
+
   export let keyword = ''
   export let showSummary = false, showSummaryEnd = false
+  import nextIcon from './images/next.svg'
 </script>
 
 <style type="text/scss" lang="scss">
@@ -50,6 +52,14 @@
       font-size: 34px;
       padding: 3vh 0 8vh;
     }
+    :global(img.next-page) {
+      width: 16px;
+      animation: shake 1s ease-in-out infinite;
+      position: relative;
+      left: 0;
+      right: 0;
+      margin: auto;
+    }
     @for $i from 0 to 10 {
       .animated-text:nth-of-type(#{$i + 1}) {
         animation: twinkling 1s ease-in-out;
@@ -60,6 +70,11 @@
     @keyframes -global-twinkling {
       0% { opacity: 0;}
       100% { opacity: 1;}
+    }
+    @keyframes -global-shake {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(4px); }
+      100% { transform: translateY(0); }
     }
   }
 </style>
@@ -77,6 +92,10 @@
     <div class="keyword">{keyword}</div>
   </div>
     {#if showSummary}
-      <div class="row summary" in:fly="{{ y: 10, duration: 500 }}" on:introend="{() => showSummaryEnd = true}">一句话总结</div>
+      <div class="row summary" in:fly="{{ y: 10, duration: 500 }}" on:introend="{() => showSummaryEnd = true}">
+        一句话总结
+      </div>
+    {:else}
+      <img src="{nextIcon}" alt="向下" class="row summary next-page animated-text"/>
     {/if}
 </div>

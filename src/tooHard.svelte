@@ -38,6 +38,8 @@
       align-items: center;
       font-size: 330px;
       height: 100vh;
+      position: relative;
+      top: -5vh;
     }
     :global(span.so) {
       font-size: 48px;
