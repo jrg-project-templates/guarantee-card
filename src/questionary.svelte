@@ -49,7 +49,9 @@
     smallTarget: '',
     bigTargetMonth: '',
     bigTarget: '',
-    finalTarget: ''
+    finalTarget: '',
+    name: window.userInfo.name,
+    avatar: window.userInfo.headimgurl
   }
   let dateVisible = false
   let fingerVisible = false
