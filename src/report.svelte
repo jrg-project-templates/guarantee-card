@@ -2,6 +2,7 @@
   import loading from './images/loading.svg'
   import repeat from './images/repeat-report.svg'
   import {onMount} from 'svelte'
+
   onMount(() => {
     const target = document.getElementById('guarantee-wrapper') || document.body
     target.scrollTo({top: 0})
@@ -47,6 +48,7 @@
       right: 0;
       transform: scaleY(10);
       width: 100%;
+      pointer-events: none;
     }
   }
 </style>
