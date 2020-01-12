@@ -52,14 +52,6 @@
       font-size: 34px;
       padding: 3vh 0 8vh;
     }
-    :global(img.next-page) {
-      width: 16px;
-      animation: shake 1s ease-in-out infinite;
-      position: relative;
-      left: 0;
-      right: 0;
-      margin: auto;
-    }
     @for $i from 0 to 10 {
       .animated-text:nth-of-type(#{$i + 1}) {
         animation: twinkling 1s ease-in-out;
@@ -67,15 +59,23 @@
         animation-delay: #{$i * 0.5}s;
       }
     }
-    @keyframes -global-twinkling {
-      0% { opacity: 0;}
-      100% { opacity: 1;}
+    :global(img.next-page) {
+      width: 16px;
+      animation: twinkling 1s ease-in-out 1.5s both, shake 1s ease-in-out infinite !important;
+      position: relative;
+      left: 0;
+      right: 0;
+      margin: auto;
     }
-    @keyframes -global-shake {
-      0% { transform: translateY(0); }
-      50% { transform: translateY(4px); }
-      100% { transform: translateY(0); }
-    }
+  }
+  @keyframes -global-twinkling {
+    0% { opacity: 0;}
+    100% { opacity: 1;}
+  }
+  @keyframes -global-shake {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(4px); }
+    100% { transform: translateY(0); }
   }
 </style>
 

@@ -107,7 +107,7 @@
     reportImage: '',
     canScrollDown: false
   }
-  $: showToohardAnimation = currentPageIndex === 1
+  $: showToohardAnimation = (currentPageIndex === 1)
 </script>
 
 <style type="text/scss" lang="scss">

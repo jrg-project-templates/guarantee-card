@@ -132,10 +132,7 @@
     canScrollDown = false
   }
 
-  document.body.addEventListener('focusout', () => {
-    //软键盘收起的事件处理
-    fixScroll()
-  })
+  document.body.addEventListener('focusout', fixScroll)
 
   let typeMachineVisible = true
   let preHeight = window.innerHeight
@@ -233,6 +230,12 @@
           > img.active {display: inline-block; transform: translateY(4px);}
         }
       }
+      .typeMachine-repeat {
+        height: 20vh;
+        width: 100vw;
+        background-size: cover;
+        background-repeat: repeat-y;
+      }
     }
   }
 </style>
@@ -264,7 +267,7 @@
   </div>
   <div class="action-wrapper {typeMachineActive && 'active' || ''} {!typeMachineVisible && 'hide' || ''}">
     <img src="{typeMachine}" class="type-machine" alt="打字机"/>
-    <div style="background: url('{typeMachineRepeat}');height: 20vh"/>
+    <div style="background: url('{typeMachineRepeat}');" class="typeMachine-repeat"/>
       {#if dateVisible && typeMachineActive}
         <span class="date">{dateContent}</span>
       {/if}

@@ -35,13 +35,26 @@
         display: inline-block;
       }
     }
+    :global(.report) {
+      position: relative;
+      z-index: 1;
+    }
+    :global(.report-repeat) {
+      position: relative;
+      z-index: 0;
+      top: -5px;
+      left: 0;
+      right: 0;
+      transform: scaleY(10);
+      width: 100%;
+    }
   }
 </style>
 
 <div class="report {reportSrc && 'load-report' || ''} {!visible && 'hidden' || ''}">
     {#if reportSrc}
-      <img src="{reportSrc}" alt="我的Flag报告"/>
-      <div style="background: url('{repeat}'); height: 50vh; position: relative; top: -5px;"/>
+      <img src="{reportSrc}" alt="我的Flag报告" class="report"/>
+      <img src="{repeat}" class="report-repeat"/>
     {:else}
       <div class="loading-tip">
         <img src="{loading}" alt="加载中" class="loading"/>
