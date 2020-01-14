@@ -8,7 +8,7 @@
   import typeMachineRepeat from './images/type-machine-repeat.svg'
   import CustomInput from './components/CustomInput.svelte'
   import {createEventDispatcher} from 'svelte'
-  import fixScroll from './components/fixScroll.js'
+  import fixScroll, {isApple} from './components/fixScroll.js'
   const dispatch = createEventDispatcher()
   import {fly} from 'svelte/transition'
 
@@ -143,8 +143,9 @@
       typeMachineVisible = true
     }
     else if (newHeight - preHeight < -140) {
-      fixScroll()
       typeMachineVisible = false
+      if(isApple()) return
+      fixScroll()
     }
     preHeight = newHeight
   }

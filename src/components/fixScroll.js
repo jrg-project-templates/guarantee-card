@@ -1,7 +1,12 @@
+
+export const isApple = () => {
+  let ua = navigator.userAgent.toLowerCase()
+  return (ua.indexOf('iphone') > 0 || ua.indexOf('ipad') > 0)
+}
+
 export default () => {
   const target = document.getElementById('guarantee-wrapper') || document.body
-  let ua = navigator.userAgent.toLowerCase()
-  if (ua.indexOf('iphone') > 0 || ua.indexOf('ipad') > 0) {
+  if (isApple()) {
     document.scrollTop = document.scrollTop
     window.scroll(0, -1)
     document.body.scroll(0, -1)

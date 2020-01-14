@@ -146,5 +146,5 @@
   <Questionary bind:reportImage={questionaryConfig.reportImage}
                bind:canScrollDown={questionaryConfig.canScrollDown}
                on:nextPage={nextPage}/>
-  <Report reportSrc={questionaryConfig.reportImage} visible={questionaryConfig.canScrollDown} reportHeight={reportHeight}/>
+  <Report reportSrc={questionaryConfig.reportImage} visible={questionaryConfig.canScrollDown} reportHeight={reportHeight} active={currentPageIndex === 4}/>
 </div>
