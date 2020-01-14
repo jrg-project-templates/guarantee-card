@@ -143,6 +143,7 @@
       typeMachineVisible = true
     }
     else if (newHeight - preHeight < -140) {
+      fixScroll()
       typeMachineVisible = false
     }
     preHeight = newHeight

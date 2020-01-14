@@ -12,12 +12,12 @@ export default () => {
       document.body.scroll(0, 1)
       target.scroll(0, 1)
       target.scrollBy({
-        top: document.querySelector('.questionary-wrapper').getBoundingClientRect().top
+        top: document.querySelector('.questionary-wrapper').getBoundingClientRect().top + 1
       })
     }, 1)
   } else {
     target.scrollBy({
-      top: document.querySelector('.questionary-wrapper').getBoundingClientRect().top
+      top: document.querySelector('.questionary-wrapper').getBoundingClientRect().top + 1
     })
   }
 }
