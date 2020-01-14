@@ -6,17 +6,20 @@
   import Questionary from './questionary.svelte'
   import _ from 'lodash'
   import {onMount} from 'svelte'
-  import smoothscroll from 'smoothscroll-polyfill';
-  smoothscroll.polyfill();
-  
+  import smoothscroll from 'smoothscroll-polyfill'
+
+  smoothscroll.polyfill()
+
   let touchStartAt = 0
   let currentPageIndex = 0
   let scrollBehavior = 'pending'
   $: touchMinLength = currentPageIndex === 0 ? 0 : 50
   onMount(() => {
     document.body.addEventListener('touchmove', function (e) {
-      e.preventDefault();
-    }, {passive: false});
+      if (reportHeight === '100vh') {
+        e.preventDefault()
+      }
+    }, {passive: false})
     document.ontouchstart = (e) => {
       touchStartAt = e.targetTouches[0].clientY
     }
@@ -47,14 +50,26 @@
     }
   })
 
+  const vibrate = () => {
+    if (navigator.vibrate) {
+      navigator.vibrate(30)
+    } else if (navigator.webkitVibrate) {
+      navigator.webkitVibrate(30)
+    }
+  }
+
   const _keywordChange = (scrollBehavior: string) => {
     if (scrollBehavior === 'scrollDown') {
       if (firstPageConfig.keywordIndex < firstPageConfig.keywords.length - 1) {
         firstPageConfig.keywordIndex += 1
+        vibrate()
         return false
       } else return true
     } else if (scrollBehavior === 'scrollUp') {
-      if (firstPageConfig.keywordIndex > 0) firstPageConfig.keywordIndex -= 1
+      if (firstPageConfig.keywordIndex > 0) {
+        firstPageConfig.keywordIndex -= 1
+        vibrate()
+      }
       return false
     }
   }
@@ -64,7 +79,7 @@
   const nextPage = _.throttle(() => {
     currentPageIndex += 1
     target.scrollBy({
-      top: document.querySelector(pageSelector[currentPageIndex]).getBoundingClientRect().top,
+      top: document.querySelector(pageSelector[currentPageIndex]).getBoundingClientRect().top + 1,
       behavior: 'smooth'
     })
   }, 2000)
@@ -72,7 +87,7 @@
   const prePage = _.throttle(() => {
     currentPageIndex -= 1
     target.scrollBy({
-      top: document.querySelector(pageSelector[currentPageIndex]).getBoundingClientRect().top,
+      top: document.querySelector(pageSelector[currentPageIndex]).getBoundingClientRect().top + 1,
       behavior: 'smooth'
     })
   }, 2000)
@@ -108,6 +123,10 @@
     canScrollDown: false
   }
   $: showToohardAnimation = (currentPageIndex === 1)
+
+  $: reportHeight = questionaryConfig.reportImage && currentPageIndex === 4 &&
+          (document.querySelector('img.report').height > document.documentElement.clientHeight) &&
+          `${document.querySelector('img.report').height}px` || '100vh'
 </script>
 
 <style type="text/scss" lang="scss">
@@ -127,5 +146,5 @@
   <Questionary bind:reportImage={questionaryConfig.reportImage}
                bind:canScrollDown={questionaryConfig.canScrollDown}
                on:nextPage={nextPage}/>
-  <Report reportSrc={questionaryConfig.reportImage} visible={questionaryConfig.canScrollDown}/>
+  <Report reportSrc={questionaryConfig.reportImage} visible={questionaryConfig.canScrollDown} reportHeight={reportHeight}/>
 </div>

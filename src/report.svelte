@@ -8,13 +8,11 @@
     target.scrollTo({top: 0})
   })
 
-  export let reportSrc, visible = false
+  export let reportSrc, visible = false, reportHeight = '100vh';
 </script>
 
 <style type="text/scss" lang="scss">
   div.report {
-    height: 100vh;
-    overflow: hidden;
     display: flex;
     justify-content: center;
     &.load-report {
@@ -46,17 +44,18 @@
       top: -5px;
       left: 0;
       right: 0;
-      transform: scaleY(10);
+      transform: scale(1, 10);
       width: 100%;
       pointer-events: none;
     }
   }
 </style>
 
-<div class="report {reportSrc && 'load-report' || ''} {!visible && 'hidden' || ''}">
+<div class="report {reportSrc && 'load-report' || ''} {!visible && 'hidden' || ''}"
+     style="height: {reportHeight}; overflow: {reportHeight === '100vh' ? 'hidden' : 'scroll'}">
     {#if reportSrc}
       <img src="{reportSrc}" alt="我的Flag报告" class="report"/>
-      <img src="{repeat}" class="report-repeat"/>
+      <img src="{repeat}" class="report-repeat" alt="repeat"/>
     {:else}
       <div class="loading-tip">
         <img src="{loading}" alt="加载中" class="loading"/>

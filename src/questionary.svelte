@@ -181,7 +181,7 @@
     }
     .action-wrapper {
       position: absolute;
-      top: 85vh;
+      top: 83vh;
       left: 0;
       right: 0;
       z-index: 2;

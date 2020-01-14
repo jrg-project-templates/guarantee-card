@@ -1,5 +1,6 @@
 <script>
   import {createEventDispatcher} from 'svelte'
+
   const dispatch = createEventDispatcher()
   let wordList = [
     `<span>我</span>`,
@@ -7,6 +8,7 @@
     `<span>难</span>`,
     `<span>了</span>`,
     `<span>！！！</span>`,
+    `<span class="col">我太难了 ！</span>`,
     `<span class="so">所以！</span>`
   ]
   let currentWordIndex = 0
@@ -16,9 +18,9 @@
         currentWordIndex++
         changeWord()
       } else {
-        animationStart && setTimeout(() => dispatch('animationEnd'), 400)
+        animationStart && setTimeout(() => dispatch('animationEnd'), 300)
       }
-    }, 400)
+    }, 300)
   }
 
   export let animationStart
@@ -40,6 +42,15 @@
       height: 100vh;
       position: relative;
       top: -5vh;
+    }
+    :global(.col) {
+      width: 1em;
+      font-size: 60px;
+      top: 0;
+      bottom: 0;
+      margin: auto;
+      flex-wrap: wrap;
+      text-align: center;
     }
     :global(span.so) {
       font-size: 48px;
