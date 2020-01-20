@@ -11,6 +11,7 @@
   smoothscroll.polyfill()
 
   let touchStartAt = 0
+  let scrollPermit = true
   let currentPageIndex = 0
   let scrollBehavior = 'pending'
   $: touchMinLength = currentPageIndex === 0 ? 0 : 50
@@ -22,6 +23,10 @@
     }, {passive: false})
     document.ontouchstart = (e) => {
       touchStartAt = e.targetTouches[0].clientY
+      if(reportHeight !== '100vh') {
+        if (document.querySelector('img.report').getBoundingClientRect().top < -20) scrollPermit = false
+        else scrollPermit = true
+      }
     }
     document.ontouchmove = (e) => {
       let scrollLength = e.changedTouches[0].clientY - touchStartAt
@@ -44,6 +49,7 @@
       } else if (scrollBehavior === 'scrollUp') {
         if (currentPageIndex === 0) return
         if (currentPageIndex === 1) {firstPageConfig = {...firstPageConfig, showSummary: false, showSummaryEnd: false}}
+        if (reportHeight !== '100vh' && !scrollPermit) return
         prePage()
       }
       scrollBehavior = 'waiting'

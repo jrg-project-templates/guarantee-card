@@ -10,7 +10,7 @@
   import {createEventDispatcher} from 'svelte'
   import fixScroll, {isApple} from './components/fixScroll.js'
   const dispatch = createEventDispatcher()
-  import {fly} from 'svelte/transition'
+  import {fly, fade} from 'svelte/transition'
 
   const defaultFinalTargetList = [
     '我会赚到一个亿',
@@ -180,6 +180,13 @@
           letter-spacing: .1em;
         }
       }
+      p.tip {
+        font-family: "PingFang SC";
+        font-size: 11px;
+        letter-spacing: .15em;
+        color: #C52E19;
+        opacity: .5;
+      }
     }
     .action-wrapper {
       position: absolute;
@@ -266,6 +273,9 @@
       <h3>最后定一个终极目标</h3>
       <CustomInput suffix="随机" on:suffixClick={getRandomFinalTarget} bind:value={targetInfo.finalTarget}/>
     </div>
+    {#if !typeMachineActive}
+      <p class="tip" transition:fade="{{ duration: 300 }}">小谷提示您: 填写完整后才可提交生成报告噢~</p>
+    {/if}
   </div>
   <div class="action-wrapper {typeMachineActive && 'active' || ''} {!typeMachineVisible && 'hide' || ''}">
     <img src="{typeMachine}" class="type-machine" alt="打字机"/>
